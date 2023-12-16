@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:messanger_app/utils/auth_container.dart';
+import 'package:messanger_app/utils/social_media_buttons.dart';
 
 import '../utils/custom_methods.dart';
 
@@ -110,87 +111,29 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Row(
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          color: Colors.grey,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
-                        child: Text('or'),
-                      ),
-                      Expanded(
-                        child: Divider(
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
+                  const OrWidget(),
                   const SizedBox(
                     height: 15,
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(30)),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 12),
-                          child: Text('continue with facebook'),
-                        ),
-                        Icon(
-                          Icons.facebook,
-                          color: Colors.blue,
-                        )
-                      ],
-                    ),
-                  ),
+                  const SocialMediaButton(
+                      text: 'Continue with Facebook',
+                      icon: Icon(
+                        Icons.facebook,
+                        color: Colors.blue,
+                      )),
                   const SizedBox(
                     height: 15,
                   ),
-                  Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(30)),
-                    child: const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.symmetric(vertical: 12),
-                          child: Text('continue with reddit'),
-                        ),
-                        Icon(
-                          Icons.reddit,
-                          color: Colors.redAccent,
-                        )
-                      ],
-                    ),
-                  ),
+                  const SocialMediaButton(
+                      text: 'Continue with Reddit',
+                      icon: Icon(
+                        Icons.reddit,
+                        color: Colors.redAccent,
+                      )),
                   const SizedBox(
                     height: 15,
                   ),
-                  const Row(
-                    children: [
-                      Expanded(
-                        child: Divider(
-                          color: Colors.grey,
-                        ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 8),
-                        child: Text('or'),
-                      ),
-                      Expanded(
-                        child: Divider(
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ],
-                  ),
+                  const OrWidget(),
                   const SizedBox(
                     height: 15,
                   ),
