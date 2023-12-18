@@ -43,3 +43,12 @@ popUpMessage(BuildContext context, TextEditingController controller) =>
         ],
       ),
     );
+
+showMessage(BuildContext context, String message) =>
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          message,
+        ),
+      ),
+    );

@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:messanger_app/utils/custom_methods.dart';
 
 import '../utils/auth_container.dart';
 
@@ -15,6 +18,30 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
+
+  Future<void> signUp() async {
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+      String uid = userCredential.user!.uid;
+
+      Map<String, dynamic> userData = {
+        'name': _nameController.text.trim(),
+        'email': _emailController.text.trim(),
+        'username': _userNameController.text.trim(),
+        'password': _passwordController.text.trim()
+      };
+
+      FirebaseFirestore.instance.collection('User').doc(uid).set(userData);
+      showMessage(context, "You have Successfully Registerd..");
+    } catch (e) {
+      print(e.toString());
+      showMessage(context, "Something went wrong..");
+    }
+  }
 
   @override
   void dispose() {
@@ -115,20 +142,25 @@ class _RegisterPageState extends State<RegisterPage> {
                         height: 15,
                       ),
                       CustomTextfield(
-                        text: 'Full Name',
+                        text: ' Name ',
                         controller: _nameController,
+                        obscure: false,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      CustomTextfield(
+                        text: 'Username',
+                        controller: _userNameController,
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      CustomTextfield(
+                        text: 'Password',
+                        controller: _passwordController,
                         obscure: true,
                       ),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      CustomTextfield(
-                          text: 'Username', controller: _userNameController),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      CustomTextfield(
-                          text: 'Password', controller: _passwordController),
                       const SizedBox(
                         height: 30,
                       ),
@@ -145,20 +177,24 @@ class _RegisterPageState extends State<RegisterPage> {
                       const SizedBox(
                         height: 15,
                       ),
-                      Container(
-                        decoration: BoxDecoration(
-                          color: CupertinoColors.activeBlue,
-                          borderRadius: BorderRadius.circular(30),
-                          border: Border.all(color: CupertinoColors.activeBlue),
-                        ),
-                        child: const Center(
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(vertical: 18),
-                            child: Text(
-                              'Sign Up',
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.bold,
+                      GestureDetector(
+                        onTap: () => signUp(),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: CupertinoColors.activeBlue,
+                            borderRadius: BorderRadius.circular(30),
+                            border:
+                                Border.all(color: CupertinoColors.activeBlue),
+                          ),
+                          child: const Center(
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(vertical: 18),
+                              child: Text(
+                                'Sign Up',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
