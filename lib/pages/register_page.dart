@@ -18,8 +18,19 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
+  bool? isChecked = false;
 
   Future<void> signUp() async {
+    CollectionReference users = FirebaseFirestore.instance.collection('User');
+    QuerySnapshot querySnapshot = await users
+        .where('username', isEqualTo: _userNameController.text.trim())
+        .get();
+
+    if (querySnapshot.docs.isNotEmpty)
+      showMessage(context, "Username already Exists.");
+
+    // it should terminate here...
+
     try {
       UserCredential userCredential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -36,9 +47,8 @@ class _RegisterPageState extends State<RegisterPage> {
       };
 
       FirebaseFirestore.instance.collection('User').doc(uid).set(userData);
-      showMessage(context, "You have Successfully Registerd..");
+      showMessage(context, "You have Successfully Registered..");
     } catch (e) {
-      print(e.toString());
       showMessage(context, "Something went wrong..");
     }
   }
@@ -136,8 +146,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         height: 30,
                       ),
                       CustomTextfield(
-                          text: "Mobile number, username or email",
-                          controller: _emailController),
+                        text: "Mobile number, username or email",
+                        controller: _emailController,
+                      ),
                       const SizedBox(
                         height: 15,
                       ),
@@ -164,14 +175,29 @@ class _RegisterPageState extends State<RegisterPage> {
                       const SizedBox(
                         height: 30,
                       ),
-                      const Column(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('By signing up you agree to our Terms,'),
-                          SizedBox(
-                            height: 4,
+                          // Some Logic to be Implemented Here....
+                          Checkbox(
+                            value: isChecked,
+                            onChanged: (value) {
+                              setState(() {
+                                isChecked = value;
+                              });
+                            },
                           ),
-                          Text('Privacy Policy and Cookies Policy.'),
+                          const Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SmallText(
+                                  text:
+                                      "By signing up you agree to our terms,"),
+                              SmallText(
+                                  text: "privacy policy and cookies policy.")
+                            ],
+                          ),
                         ],
                       ),
                       const SizedBox(
@@ -234,6 +260,21 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class SmallText extends StatelessWidget {
+  final String text;
+
+  const SmallText({super.key, required this.text});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      text,
+      style: TextStyle(
+          fontSize: 12, color: Colors.grey[600], fontWeight: FontWeight.w700),
     );
   }
 }
