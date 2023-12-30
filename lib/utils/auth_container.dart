@@ -7,12 +7,14 @@ class CustomTextfield extends StatelessWidget {
   final TextEditingController controller;
   final bool? obscure;
   final String? errorMessage;
-  const CustomTextfield(
-      {super.key,
-      required this.text,
-      required this.controller,
-      this.obscure,
-      this.errorMessage});
+
+  const CustomTextfield({
+    super.key,
+    required this.text,
+    required this.controller,
+    this.obscure,
+    this.errorMessage,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,10 @@ class CustomTextfield extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(8))),
           labelText: text,
           errorText: errorMessage,
-          hintStyle: const TextStyle(fontSize: 13, fontWeight: FontWeight.w100),
+          hintStyle: const TextStyle(
+            fontSize: 13,
+            fontWeight: FontWeight.w100,
+          ),
         ),
       ),
     );

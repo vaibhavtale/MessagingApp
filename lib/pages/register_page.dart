@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:messanger_app/utils/custom_methods.dart';
 
 import '../utils/auth_container.dart';
@@ -19,17 +20,37 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
   bool? isChecked = false;
+  String? _errorMessageEmail,
+      _errorMessageName,
+      _errorMessageUsername,
+      _errorMessagePassword;
+  final fb = FacebookLogin();
 
   Future<void> signUp() async {
+    // Checking for Unique Username..
     CollectionReference users = FirebaseFirestore.instance.collection('User');
     QuerySnapshot querySnapshot = await users
         .where('username', isEqualTo: _userNameController.text.trim())
         .get();
 
-    if (querySnapshot.docs.isNotEmpty)
+    if (querySnapshot.docs.isNotEmpty) {
       showMessage(context, "Username already Exists.");
+      return;
+    }
 
-    // it should terminate here...
+    // Name Field should not be Empty..
+    if (_nameController.text.trim() == '') {
+      setState(() {
+        _errorMessageName = 'Name field Cannot be Empty..';
+      });
+      return;
+    }
+
+    // Agreement has been Signed..
+    if (isChecked == false) {
+      showMessage(context, 'Please Sign the Agreement.');
+      return;
+    }
 
     try {
       UserCredential userCredential =
@@ -48,9 +69,27 @@ class _RegisterPageState extends State<RegisterPage> {
 
       FirebaseFirestore.instance.collection('User').doc(uid).set(userData);
       showMessage(context, "You have Successfully Registered..");
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'invalid-email') {
+        setState(() {
+          _errorMessageEmail = 'Invalid Email';
+        });
+      } else if (e.code == 'email-already-in-use') {
+        setState(() {
+          _errorMessageEmail = 'Email is already in use';
+        });
+      } else if (e.code == 'weak-password' || e.code == '') {
+        setState(() {
+          _errorMessagePassword = 'Use Strong Password least 8 char.';
+        });
+      } else {
+        showMessage(context, '${e.message}');
+      }
     } catch (e) {
-      showMessage(context, "Something went wrong..");
+      showMessage(context, e.toString());
     }
+    _errorMessageEmail = _errorMessageName =
+        _errorMessagePassword = _errorMessageUsername = null;
   }
 
   @override
@@ -87,9 +126,9 @@ class _RegisterPageState extends State<RegisterPage> {
                       const Text(
                         "Messenger",
                         style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 35,
-                            fontStyle: FontStyle.italic),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 35,
+                        ),
                       ),
                       const SizedBox(
                         height: 30,
@@ -146,8 +185,9 @@ class _RegisterPageState extends State<RegisterPage> {
                         height: 30,
                       ),
                       CustomTextfield(
-                        text: "Mobile number, username or email",
+                        text: "Email",
                         controller: _emailController,
+                        errorMessage: _errorMessageEmail,
                       ),
                       const SizedBox(
                         height: 15,
@@ -155,7 +195,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       CustomTextfield(
                         text: ' Name ',
                         controller: _nameController,
-                        obscure: false,
+                        errorMessage: _errorMessageName,
                       ),
                       const SizedBox(
                         height: 15,
@@ -163,6 +203,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       CustomTextfield(
                         text: 'Username',
                         controller: _userNameController,
+                        errorMessage: _errorMessageUsername,
                       ),
                       const SizedBox(
                         height: 15,
@@ -170,6 +211,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       CustomTextfield(
                         text: 'Password',
                         controller: _passwordController,
+                        errorMessage: _errorMessagePassword,
                         obscure: true,
                       ),
                       const SizedBox(
@@ -274,7 +316,10 @@ class SmallText extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-          fontSize: 12, color: Colors.grey[600], fontWeight: FontWeight.w700),
+        fontSize: 12,
+        color: Colors.grey[600],
+        fontWeight: FontWeight.w700,
+      ),
     );
   }
 }
