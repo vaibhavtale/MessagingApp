@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 import 'package:messanger_app/utils/custom_methods.dart';
 
 import '../utils/auth_container.dart';
@@ -24,7 +23,6 @@ class _RegisterPageState extends State<RegisterPage> {
       _errorMessageName,
       _errorMessageUsername,
       _errorMessagePassword;
-  final fb = FacebookLogin();
 
   Future<void> signUp() async {
     // Checking for Unique Username..
