@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:messanger_app/utils/custom_methods.dart';
+import 'package:messenger_app/utils/custom_methods.dart';
 
 import '../utils/auth_container.dart';
 
@@ -76,7 +76,7 @@ class _RegisterPageState extends State<RegisterPage> {
         setState(() {
           _errorMessageEmail = 'Email is already in use';
         });
-      } else if (e.code == 'weak-password' || e.code == '') {
+      } else if (e.code == 'weak-password') {
         setState(() {
           _errorMessagePassword = 'Use Strong Password least 8 char.';
         });
@@ -135,7 +135,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Sign up to see photos and videos ',
+                            'Register to see photos and videos ',
                             style: TextStyle(
                                 fontWeight: FontWeight.w700,
                                 color: Colors.grey.shade600,
@@ -170,7 +170,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 width: 25,
                               ),
                               Text(
-                                'Log in with Facebook',
+                                'Sign up with Facebook',
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),
@@ -280,16 +280,19 @@ class _RegisterPageState extends State<RegisterPage> {
                       color: Colors.grey.shade300,
                     ),
                     borderRadius: BorderRadius.circular(5)),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Have an account? "),
-                      Text(
-                        'Sign In',
-                        style: TextStyle(
-                          color: Colors.blue,
+                      const Text("Have an account? "),
+                      GestureDetector(
+                        onTap: () => Navigator.of(context).pop(),
+                        child: const Text(
+                          'Sign In',
+                          style: TextStyle(
+                            color: Colors.blue,
+                          ),
                         ),
                       ),
                     ],

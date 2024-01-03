@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:messanger_app/firebase_options.dart';
-import 'package:messanger_app/responsive/desktop_view.dart';
-import 'package:messanger_app/responsive/mobile_view.dart';
-import 'package:messanger_app/responsive/responsive_layout.dart';
-import 'package:messanger_app/responsive/tablet_view.dart';
+import 'package:messenger_app/firebase_options.dart';
+import 'package:messenger_app/responsive/desktop_view.dart';
+import 'package:messenger_app/responsive/mobile_view.dart';
+import 'package:messenger_app/responsive/responsive_layout.dart';
+import 'package:messenger_app/responsive/tablet_view.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
