@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:messenger_app/pages/register_page.dart';
 import 'package:messenger_app/utils/auth_container.dart';
 import 'package:messenger_app/utils/social_media_buttons.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 import '../utils/custom_methods.dart';
 
@@ -88,12 +89,18 @@ class _LoginPageState extends State<LoginPage> {
               padding: const EdgeInsets.all(35),
               child: Column(
                 children: [
-                  const Text(
+                  GradientText(
                     "Messenger",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
+                      fontStyle: FontStyle.italic,
                       fontSize: 35,
                     ),
+                    colors: const [
+                      Colors.pinkAccent,
+                      Colors.redAccent,
+                      Colors.orangeAccent
+                    ],
                   ),
                   const SizedBox(
                     height: 50,
@@ -193,7 +200,9 @@ class _LoginPageState extends State<LoginPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Text("don't have account? "),
+                      const Text(
+                        "don't have account? ",
+                      ),
                       GestureDetector(
                         onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(

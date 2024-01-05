@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:messenger_app/utils/custom_methods.dart';
+import 'package:simple_gradient_text/simple_gradient_text.dart';
 
 import '../utils/auth_container.dart';
 
@@ -121,12 +122,18 @@ class _RegisterPageState extends State<RegisterPage> {
                   padding: const EdgeInsets.all(35),
                   child: Column(
                     children: [
-                      const Text(
+                      GradientText(
                         "Messenger",
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontWeight: FontWeight.bold,
+                          fontStyle: FontStyle.italic,
                           fontSize: 35,
                         ),
+                        colors: const [
+                          Colors.pinkAccent,
+                          Colors.redAccent,
+                          Colors.orangeAccent
+                        ],
                       ),
                       const SizedBox(
                         height: 30,
