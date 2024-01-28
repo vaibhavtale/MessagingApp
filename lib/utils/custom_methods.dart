@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 
 import 'auth_container.dart';
 
@@ -52,3 +54,27 @@ showMessage(BuildContext context, String message) =>
         ),
       ),
     );
+
+void signInFacebook() async {
+// Create an instance of FacebookLogin
+  final fb = FacebookLogin();
+
+// Log in
+  final res = await fb.expressLogin();
+
+  if (res.status == FacebookLoginStatus.success) {
+    final FacebookAccessToken? accessToken = res.accessToken;
+   // print('Access token: ${accessToken?.token}');
+  }
+}
+
+Future<UserCredential> signInGoogle() async {
+  // Create a new provider
+  GoogleAuthProvider googleProvider = GoogleAuthProvider();
+
+  googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
+  googleProvider.setCustomParameters({'login_hint': 'user@example.com'});
+
+  // Once signed in, return the UserCredential
+  return await FirebaseAuth.instance.signInWithPopup(googleProvider);
+}

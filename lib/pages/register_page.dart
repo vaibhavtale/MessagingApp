@@ -68,6 +68,7 @@ class _RegisterPageState extends State<RegisterPage> {
 
       FirebaseFirestore.instance.collection('User').doc(uid).set(userData);
       showMessage(context, "You have Successfully Registered..");
+      Navigator.of(context).pop();
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
         setState(() {

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:messenger_app/pages/register_page.dart';
 import 'package:messenger_app/utils/auth_container.dart';
+import 'package:messenger_app/utils/bottom_navigation_bar.dart';
 import 'package:messenger_app/utils/social_media_buttons.dart';
 import 'package:simple_gradient_text/simple_gradient_text.dart';
 
@@ -30,6 +31,9 @@ class _LoginPageState extends State<LoginPage> {
         password: _passwordController.text.trim(),
       );
       showMessage(context, 'Signed In successfully.');
+
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const AppNavigationBar()));
     } on FirebaseAuthException catch (e) {
       if (e.code == 'invalid-email') {
         setState(() {
@@ -175,21 +179,29 @@ class _LoginPageState extends State<LoginPage> {
                   const SizedBox(
                     height: 15,
                   ),
-                  const SocialMediaButton(
+                  GestureDetector(
+                    onTap: () => signInGoogle(),
+                    child: const SocialMediaButton(
                       text: 'Continue with Google',
                       icon: Icon(
-                        Icons.security,
-                        color: Colors.redAccent,
-                      )),
+                        Icons.g_mobiledata,
+                        color: Colors.pinkAccent,
+                        size: 35,
+                      ),
+                    ),
+                  ),
                   const SizedBox(
                     height: 15,
                   ),
-                  const SocialMediaButton(
-                      text: 'Continue with Facebook',
-                      icon: Icon(
-                        Icons.facebook,
-                        color: Colors.blue,
-                      )),
+                  GestureDetector(
+                    onTap: () => signInFacebook(),
+                    child: const SocialMediaButton(
+                        text: 'Continue with Facebook',
+                        icon: Icon(
+                          Icons.facebook,
+                          color: Colors.blue,
+                        )),
+                  ),
                   const SizedBox(
                     height: 15,
                   ),
@@ -206,7 +218,7 @@ class _LoginPageState extends State<LoginPage> {
                       GestureDetector(
                         onTap: () => Navigator.of(context).push(
                             MaterialPageRoute(
-                                builder: (context) => RegisterPage())),
+                                builder: (context) => const RegisterPage())),
                         child: const Text(
                           'Sign up',
                           style: TextStyle(
