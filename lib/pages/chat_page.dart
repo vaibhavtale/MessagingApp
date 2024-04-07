@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:messenger_app/chat/chat_feature.dart';
+import 'package:messenger_app/utils/custom_methods.dart';
 import 'package:messenger_app/utils/message_container.dart';
 
 class ChatPage extends StatefulWidget {
@@ -22,9 +23,13 @@ class _ChatPageState extends State<ChatPage> {
 
   void sendMessage() async {
     if (_messageController.text.isNotEmpty) {
-      await _chatFeature.sendMessage(
-          widget.receiverId, _messageController.text.trim());
-      _messageController.clear();
+      try {
+        await _chatFeature.sendMessage(
+            widget.receiverId, _messageController.text.trim());
+        _messageController.clear();
+      } catch (exception) {
+        showMessage(context, 'Failed to send message');
+      }
     }
   }
 

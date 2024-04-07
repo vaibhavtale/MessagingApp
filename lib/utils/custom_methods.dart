@@ -4,6 +4,16 @@ import 'package:flutter_login_facebook/flutter_login_facebook.dart';
 
 import 'auth_container.dart';
 
+final FirebaseAuth _auth = FirebaseAuth.instance;
+
+Future<void> resetPassword(String email) async {
+  try {
+    return await _auth.sendPasswordResetEmail(email: email);
+  } catch (e) {
+    print(e); // showError(title: '...', error: e);
+  }
+}
+
 popUpMessage(BuildContext context, TextEditingController controller) =>
     showDialog(
       context: context,
@@ -37,7 +47,9 @@ popUpMessage(BuildContext context, TextEditingController controller) =>
             ),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: () {
+              resetPassword(controller.text.trim());
+            },
             child: const Text(
               "send link",
             ),
@@ -64,7 +76,7 @@ void signInFacebook() async {
 
   if (res.status == FacebookLoginStatus.success) {
     final FacebookAccessToken? accessToken = res.accessToken;
-   // print('Access token: ${accessToken?.token}');
+    // print('Access token: ${accessToken?.token}');
   }
 }
 

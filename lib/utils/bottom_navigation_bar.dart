@@ -36,8 +36,8 @@ class _AppNavigationBarState extends State<AppNavigationBar> {
         },
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+            icon: Icon(Icons.chat_outlined),
+            label: 'Chat',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.video_call),

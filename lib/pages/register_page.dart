@@ -19,6 +19,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
+  
   bool? isChecked = false;
   String? _errorMessageEmail,
       _errorMessageName,
@@ -26,6 +27,10 @@ class _RegisterPageState extends State<RegisterPage> {
       _errorMessagePassword;
 
   Future<void> signUp() async {
+
+    _errorMessageEmail = _errorMessageName =
+    _errorMessagePassword = _errorMessageUsername = _errorMessagePassword =  null;
+
     // Checking for Unique Username..
     CollectionReference users = FirebaseFirestore.instance.collection('User');
     QuerySnapshot querySnapshot = await users
@@ -33,7 +38,10 @@ class _RegisterPageState extends State<RegisterPage> {
         .get();
 
     if (querySnapshot.docs.isNotEmpty) {
-      showMessage(context, "Username already Exists.");
+      //showMessage(context, "Username already Exists.");
+      setState(() {
+        _errorMessageUsername = "Username already exists..";
+      });
       return;
     }
 
@@ -70,6 +78,9 @@ class _RegisterPageState extends State<RegisterPage> {
       showMessage(context, "You have Successfully Registered..");
       Navigator.of(context).pop();
     } on FirebaseAuthException catch (e) {
+      
+
+
       if (e.code == 'invalid-email') {
         setState(() {
           _errorMessageEmail = 'Invalid Email';
@@ -88,8 +99,7 @@ class _RegisterPageState extends State<RegisterPage> {
     } catch (e) {
       showMessage(context, e.toString());
     }
-    _errorMessageEmail = _errorMessageName =
-        _errorMessagePassword = _errorMessageUsername = null;
+    
   }
 
   @override
