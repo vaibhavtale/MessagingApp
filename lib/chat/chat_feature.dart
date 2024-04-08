@@ -10,45 +10,54 @@ class ChatFeature extends ChangeNotifier {
 
   // Send message
   Future<void> sendMessage(String receiverId, String message) async {
-    // Get current user Info..
-    String senderId = _firebaseAuth.currentUser!.uid;
-    String senderEmail = _firebaseAuth.currentUser!.email.toString();
+    try {
+      // Get current user Info..
+      String senderId = _firebaseAuth.currentUser!.uid;
+      String senderEmail = _firebaseAuth.currentUser!.email.toString();
 
-    //   Create a new message
-    Message newMessage = Message(
-      senderId: senderId,
-      senderEmail: senderEmail,
-      receiverId: receiverId,
-      message: message,
-      timestamp: Timestamp.now(),
-    );
+      //   Create a new message
+      Message newMessage = Message(
+        senderId: senderId,
+        senderEmail: senderEmail,
+        receiverId: receiverId,
+        message: message,
+        timestamp: Timestamp.now(),
+      );
 
-    //   Construct chat room Id from current user id and receiver Id
-    List<String> ids = [senderId, receiverId];
-    ids.sort();
-    String chatRoomId = ids.join("_");
+      //   Construct chat room Id from current user id and receiver Id
+      List<String> ids = [senderId, receiverId];
+      ids.sort();
+      String chatRoomId = ids.join("_");
 
-    //   Add new Message to database..
-    _firestore
-        .collection('Chat_room')
-        .doc(chatRoomId)
-        .collection('Messages')
-        .add(
-          newMessage.toMap(),
-        );
+      //   Add new Message to database..
+      _firestore
+          .collection('Chat_room')
+          .doc(chatRoomId)
+          .collection('Messages')
+          .add(
+            newMessage.toMap(),
+          );
+    } catch (e) {
+      //rethrow;
+    }
   }
+
   //Get the messages from firebase firestore.
 
   Stream<QuerySnapshot> getMessage(String userId, String senderId) {
-    List<String> ids = [userId, senderId];
-    ids.sort();
-    String chatRoomId = ids.join("_");
+    try{
+      List<String> ids = [userId, senderId];
+      ids.sort();
+      String chatRoomId = ids.join("_");
 
-    return _firestore
-        .collection('Chat_room')
-        .doc(chatRoomId)
-        .collection('Messages')
-        .orderBy('Timestamp', descending: false)
-        .snapshots();
+      return _firestore
+          .collection('Chat_room')
+          .doc(chatRoomId)
+          .collection('Messages')
+          .orderBy('Timestamp', descending: false)
+          .snapshots();
+    }catch(e){
+      rethrow;
+    }
   }
 }

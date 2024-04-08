@@ -19,7 +19,7 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _userNameController = TextEditingController();
-  
+
   bool? isChecked = false;
   String? _errorMessageEmail,
       _errorMessageName,
@@ -27,30 +27,37 @@ class _RegisterPageState extends State<RegisterPage> {
       _errorMessagePassword;
 
   Future<void> signUp() async {
+    _errorMessageEmail = _errorMessageName = _errorMessagePassword =
+        _errorMessageUsername = _errorMessagePassword = null;
 
-    _errorMessageEmail = _errorMessageName =
-    _errorMessagePassword = _errorMessageUsername = _errorMessagePassword =  null;
+    try {
+      // Checking for Unique Username..
+      CollectionReference users = FirebaseFirestore.instance.collection('User');
+      QuerySnapshot querySnapshot = await users
+          .where('username', isEqualTo: _userNameController.text.trim())
+          .get();
 
-    // Checking for Unique Username..
-    CollectionReference users = FirebaseFirestore.instance.collection('User');
-    QuerySnapshot querySnapshot = await users
-        .where('username', isEqualTo: _userNameController.text.trim())
-        .get();
-
-    if (querySnapshot.docs.isNotEmpty) {
-      //showMessage(context, "Username already Exists.");
-      setState(() {
-        _errorMessageUsername = "Username already exists..";
-      });
-      return;
+      if (querySnapshot.docs.isNotEmpty) {
+        //showMessage(context, "Username already Exists.");
+        setState(() {
+          _errorMessageUsername = "Username already exists..";
+        });
+        return;
+      }
+    } catch (e) {
+      //
     }
 
-    // Name Field should not be Empty..
-    if (_nameController.text.trim() == '') {
-      setState(() {
-        _errorMessageName = 'Name field Cannot be Empty..';
-      });
-      return;
+    try {
+      // Name Field should not be Empty..
+      if (_nameController.text.trim() == '') {
+        setState(() {
+          _errorMessageName = 'Name field Cannot be Empty..';
+        });
+        return;
+      }
+    } catch (e) {
+      //
     }
 
     // Agreement has been Signed..
@@ -78,9 +85,6 @@ class _RegisterPageState extends State<RegisterPage> {
       showMessage(context, "You have Successfully Registered..");
       Navigator.of(context).pop();
     } on FirebaseAuthException catch (e) {
-      
-
-
       if (e.code == 'invalid-email') {
         setState(() {
           _errorMessageEmail = 'Invalid Email';
@@ -99,7 +103,6 @@ class _RegisterPageState extends State<RegisterPage> {
     } catch (e) {
       showMessage(context, e.toString());
     }
-    
   }
 
   @override
@@ -305,7 +308,13 @@ class _RegisterPageState extends State<RegisterPage> {
                     children: [
                       const Text("Have an account? "),
                       GestureDetector(
-                        onTap: () => Navigator.of(context).pop(),
+                        onTap: () {
+                          try {
+                            Navigator.of(context).pop();
+                          } catch (e) {
+                            //
+                          }
+                        },
                         child: const Text(
                           'Sign In',
                           style: TextStyle(

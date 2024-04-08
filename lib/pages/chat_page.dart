@@ -19,17 +19,18 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _messageController = TextEditingController();
   final ChatFeature _chatFeature = ChatFeature();
+
   //final _firebase = FirebaseAuth.instance;
 
   void sendMessage() async {
-    if (_messageController.text.isNotEmpty) {
-      try {
+    try {
+      if (_messageController.text.isNotEmpty) {
         await _chatFeature.sendMessage(
             widget.receiverId, _messageController.text.trim());
         _messageController.clear();
-      } catch (exception) {
-        showMessage(context, 'Failed to send message');
       }
+    } catch (e) {
+      //
     }
   }
 

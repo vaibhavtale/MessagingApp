@@ -23,6 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _resetPasswordController =
       TextEditingController();
   String? _emailErrorMessage, _errorMessagePassword;
+
   //final _firebase = FirebaseAuth.instance;
 
   Future<User?> signIn() async {
@@ -217,9 +218,14 @@ class _LoginPageState extends State<LoginPage> {
                         "don't have account? ",
                       ),
                       GestureDetector(
-                        onTap: () => Navigator.of(context).push(
-                            MaterialPageRoute(
-                                builder: (context) => const RegisterPage())),
+                        onTap: () {
+                          try {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const RegisterPage()));
+                          } catch (e) {
+                            //
+                          }
+                        },
                         child: const Text(
                           'Sign up',
                           style: TextStyle(

@@ -10,7 +10,7 @@ Future<void> resetPassword(String email) async {
   try {
     return await _auth.sendPasswordResetEmail(email: email);
   } catch (e) {
-    print(e); // showError(title: '...', error: e);
+    rethrow;
   }
 }
 
@@ -81,12 +81,18 @@ void signInFacebook() async {
 }
 
 Future<UserCredential> signInGoogle() async {
-  // Create a new provider
-  GoogleAuthProvider googleProvider = GoogleAuthProvider();
+  try {
+    // Create a new provider
+    GoogleAuthProvider googleProvider = GoogleAuthProvider();
 
-  googleProvider.addScope('https://www.googleapis.com/auth/contacts.readonly');
-  googleProvider.setCustomParameters({'login_hint': 'user@example.com'});
+    googleProvider
+        .addScope('https://www.googleapis.com/auth/contacts.readonly');
+    googleProvider.setCustomParameters({'login_hint': 'user@example.com'});
 
-  // Once signed in, return the UserCredential
-  return await FirebaseAuth.instance.signInWithPopup(googleProvider);
+    // Once signed in, return the UserCredential
+    return await FirebaseAuth.instance.signInWithPopup(googleProvider);
+  } catch (e) {
+    //
+    rethrow;
+  }
 }
