@@ -1,8 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:messenger_app/chat/chat_feature.dart';
-import 'package:messenger_app/utils/custom_methods.dart';
 import 'package:messenger_app/utils/message_container.dart';
 
 class ChatPage extends StatefulWidget {
@@ -65,18 +66,27 @@ class _ChatPageState extends State<ChatPage> {
                     width: 40,
                   ),
                   Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        color: Colors.grey[200],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10),
-                        child: TextField(
-                          controller: _messageController,
-                          decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Type Message here..'),
+                    child: RawKeyboardListener(
+                      focusNode: FocusNode(),
+                      onKey: (RawKeyEvent event) {
+                        if (event is RawKeyDownEvent &&
+                            event.logicalKey == LogicalKeyboardKey.enter) {
+                          sendMessage();
+                        }
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.grey[200],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: TextField(
+                            controller: _messageController,
+                            decoration: const InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Type Message here..'),
+                          ),
                         ),
                       ),
                     ),
@@ -139,7 +149,7 @@ class _ChatPageState extends State<ChatPage> {
         : Alignment.centerLeft;
     Timestamp timestamp = data['Timestamp'];
     DateTime dateTime = timestamp.toDate();
-    String formattedTime = "${dateTime.hour}:${dateTime.minute.toString()}";
+    String formattedTime = DateFormat.jm().format(dateTime);
 
     return Container(
         padding: const EdgeInsets.all(8),
@@ -147,6 +157,13 @@ class _ChatPageState extends State<ChatPage> {
         child: MessageContainer(
           message: data['Message'],
           time: formattedTime,
+          foreColor:
+              (data['SenderId'] == FirebaseAuth.instance.currentUser!.uid)
+                  ? Colors.grey.shade800
+                  : Colors.white,
+          bgColor: (data['SenderId'] == FirebaseAuth.instance.currentUser!.uid)
+              ? Colors.grey.shade200
+              : const Color.fromRGBO(74, 210, 153, 3),
         ));
   }
 }
