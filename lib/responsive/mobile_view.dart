@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:messenger_app/pages/chat_page.dart';
+
+import '../pages/chat_page.dart';
 
 class MobileView extends StatelessWidget {
   const MobileView({super.key});
@@ -7,7 +8,9 @@ class MobileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const ChatPage(
-        receiverId: "KrK2WHfOXER8wHo8VZcWtmYDOxm1",
-        receiverEmail: "pranav@gmail.com");
+      data: {'email': "pranav@gmail.com", 'name': 'Pranav Nair'},
+      receiverId: 'KrK2WHfOXER8wHo8VZcWtmYDOxm1',
+    );
+    //return LoginPage();
   }
 }

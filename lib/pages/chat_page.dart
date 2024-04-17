@@ -8,10 +8,12 @@ import 'package:messenger_app/utils/message_container.dart';
 
 class ChatPage extends StatefulWidget {
   final String receiverId;
-  final String receiverEmail;
 
-  const ChatPage(
-      {super.key, required this.receiverId, required this.receiverEmail});
+  /*final String receiverEmail;
+  final String receiverName;*/
+  final Map<String, dynamic> data;
+
+  const ChatPage({super.key, required this.data, required this.receiverId});
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -46,11 +48,55 @@ class _ChatPageState extends State<ChatPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Center(
-            child: Text(
-          widget.receiverEmail.toString(),
-          style: const TextStyle(fontSize: 16),
-        )),
+        backgroundColor: const Color.fromRGBO(158, 126, 253, 1),
+        leading: const Padding(
+          padding: EdgeInsets.only(left: 10),
+          child: Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+          ),
+        ),
+        leadingWidth: 30,
+        title: Row(
+          children: [
+            const CircleAvatar(
+              backgroundImage: AssetImage('assets/cuteboy.png'),
+              radius: 20,
+            ),
+            const SizedBox(
+              width: 10,
+            ),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  widget.data['name'],
+                  style: const TextStyle(
+                      fontSize: 16, fontWeight: FontWeight.bold),
+                ),
+                const Text("online", style: TextStyle(fontSize: 10))
+              ],
+            )
+          ],
+        ),
+        actions: const [
+          Icon(Icons.call),
+          SizedBox(
+            width: 20,
+          ),
+          Icon(Icons.video_call_rounded),
+          SizedBox(
+            width: 20,
+          ),
+          Icon(Icons.more_vert),
+          SizedBox(
+            width: 5,
+          )
+        ],
       ),
       body: Stack(
         children: [
@@ -58,13 +104,13 @@ class _ChatPageState extends State<ChatPage> {
           Align(
             alignment: Alignment.bottomCenter,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  const SizedBox(
+                  /*const SizedBox(
                     width: 40,
-                  ),
+                  ),*/
                   Expanded(
                     child: RawKeyboardListener(
                       focusNode: FocusNode(),
@@ -74,33 +120,47 @@ class _ChatPageState extends State<ChatPage> {
                           sendMessage();
                         }
                       },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: Colors.grey[200],
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: TextField(
-                            controller: _messageController,
-                            decoration: const InputDecoration(
+                      child: Padding(
+                        padding: const EdgeInsets.only(right: 20),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                color: const Color.fromRGBO(158, 126, 253, 0.3),
+                                style: BorderStyle.solid,
+                                width: 1),
+                            borderRadius: BorderRadius.circular(360),
+                            color: Colors.grey[200],
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 30,
+                            ),
+                            child: TextField(
+                              controller: _messageController,
+                              decoration: const InputDecoration(
                                 border: InputBorder.none,
-                                hintText: 'Type Message here..'),
+                                hintText: 'Type Message here..',
+                                hintStyle: TextStyle(
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(
+                  /* const SizedBox(
                     width: 40,
-                  ),
+                  ),*/
                   GestureDetector(
                     onTap: () {
                       sendMessage();
                     },
                     child: Container(
                       decoration: const BoxDecoration(
-                          shape: BoxShape.circle, color: Colors.blueAccent),
+                          shape: BoxShape.circle,
+                          color: Color.fromRGBO(158, 126, 253, 3)),
                       child: const Padding(
                         padding: EdgeInsets.all(12.0),
                         child: Icon(
@@ -162,8 +222,8 @@ class _ChatPageState extends State<ChatPage> {
                   ? Colors.grey.shade800
                   : Colors.white,
           bgColor: (data['SenderId'] == FirebaseAuth.instance.currentUser!.uid)
-              ? Colors.grey.shade200
-              : const Color.fromRGBO(74, 210, 153, 3),
+              ? const Color.fromRGBO(10, 202, 230, 0.3)
+              : const Color.fromRGBO(74, 210, 153, 1),
         ));
   }
 }

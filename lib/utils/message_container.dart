@@ -5,6 +5,7 @@ class MessageContainer extends StatelessWidget {
   final String time;
   final Color foreColor;
   final Color bgColor;
+
   const MessageContainer(
       {super.key,
       required this.message,
@@ -17,9 +18,14 @@ class MessageContainer extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.only(top: 5, left: 15, right: 15, bottom: 1),
       decoration: BoxDecoration(
-          color: bgColor, borderRadius: BorderRadius.circular(12)),
+          border: Border.all(
+              color: Color.fromRGBO(158, 126, 253, 0.2),
+              style: BorderStyle.solid,
+              width: 1),
+          color: bgColor,
+          borderRadius: BorderRadius.circular(12)),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
+        //crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
             message,
