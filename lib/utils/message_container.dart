@@ -19,13 +19,13 @@ class MessageContainer extends StatelessWidget {
       padding: const EdgeInsets.only(top: 5, left: 15, right: 15, bottom: 1),
       decoration: BoxDecoration(
           border: Border.all(
-              color: Color.fromRGBO(158, 126, 253, 0.2),
+              color: const Color.fromRGBO(158, 126, 253, 0.2),
               style: BorderStyle.solid,
               width: 1),
           color: bgColor,
           borderRadius: BorderRadius.circular(12)),
       child: Column(
-        //crossAxisAlignment: CrossAxisAlignment.end,
+        crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
             message,

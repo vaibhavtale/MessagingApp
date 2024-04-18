@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:messenger_app/chat/chat_feature.dart';
 import 'package:messenger_app/utils/message_container.dart';
@@ -22,7 +21,7 @@ class ChatPage extends StatefulWidget {
 class _ChatPageState extends State<ChatPage> {
   final TextEditingController _messageController = TextEditingController();
   final ChatFeature _chatFeature = ChatFeature();
-
+  var focusNode = FocusNode();
   //final _firebase = FirebaseAuth.instance;
 
   void sendMessage() async {
@@ -111,45 +110,50 @@ class _ChatPageState extends State<ChatPage> {
                   /*const SizedBox(
                     width: 40,
                   ),*/
-                  Expanded(
-                    child: RawKeyboardListener(
+                  /*  child: RawKeyboardListener(
                       focusNode: FocusNode(),
                       onKey: (RawKeyEvent event) {
                         if (event is RawKeyDownEvent &&
                             event.logicalKey == LogicalKeyboardKey.enter) {
                           sendMessage();
                         }
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 20),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                                color: const Color.fromRGBO(158, 126, 253, 0.3),
-                                style: BorderStyle.solid,
-                                width: 1),
-                            borderRadius: BorderRadius.circular(360),
-                            color: Colors.grey[200],
+                      },*/
+
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.only(right: 20),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          border: Border.all(
+                              color: const Color.fromRGBO(158, 126, 253, 0.3),
+                              style: BorderStyle.solid,
+                              width: 1),
+                          borderRadius: BorderRadius.circular(360),
+                          color: Colors.grey[200],
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 30,
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 30,
-                            ),
-                            child: TextField(
-                              controller: _messageController,
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Type Message here..',
-                                hintStyle: TextStyle(
-                                  fontSize: 12,
-                                ),
+                          child: TextField(
+                            controller: _messageController,
+                            decoration: const InputDecoration(
+                              border: InputBorder.none,
+                              hintText: 'Type Message here..',
+                              hintStyle: TextStyle(
+                                fontSize: 12,
                               ),
                             ),
+                            onSubmitted: (value) {
+                              sendMessage();
+                            },
+                            textInputAction: TextInputAction.done,
                           ),
                         ),
                       ),
                     ),
                   ),
+
                   /* const SizedBox(
                     width: 40,
                   ),*/
