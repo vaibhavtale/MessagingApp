@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:messenger_app/chat/chat_feature.dart';
@@ -97,88 +98,143 @@ class _ChatPageState extends State<ChatPage> {
           )
         ],
       ),
-      body: Stack(
-        children: [
-          _buildMessageList(),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: MediaQuery.of(context).size.height * 0.86,
+              child: Expanded(
+                child: _buildMessageList(),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 5),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  /*const SizedBox(
-                    width: 40,
-                  ),*/
-                  /*  child: RawKeyboardListener(
-                      focusNode: FocusNode(),
-                      onKey: (RawKeyEvent event) {
-                        if (event is RawKeyDownEvent &&
-                            event.logicalKey == LogicalKeyboardKey.enter) {
-                          sendMessage();
-                        }
-                      },*/
-
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              color: const Color.fromRGBO(158, 126, 253, 0.3),
-                              style: BorderStyle.solid,
-                              width: 1),
+// <<<<<<< HEAD
+                  // /*const SizedBox(
+                  //   width: 40,
+                  // ),*/
+                  // /*  child: RawKeyboardListener(
+                  //     focusNode: FocusNode(),
+                  //     onKey: (RawKeyEvent event) {
+                  //       if (event is RawKeyDownEvent &&
+                  //           event.logicalKey == LogicalKeyboardKey.enter) {
+                  //         sendMessage();
+                  //       }
+                  //     },*/
+                  //
+                  // Expanded(
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.only(right: 20),
+                  //     child: Container(
+                  //       decoration: BoxDecoration(
+                  //         border: Border.all(
+                  //             color: const Color.fromRGBO(158, 126, 253, 0.3),
+                  //             style: BorderStyle.solid,
+                  //             width: 1),
+                  //         borderRadius: BorderRadius.circular(360),
+                  //         color: Colors.grey[200],
+                  //       ),
+                  //       child: Padding(
+                  //         padding: const EdgeInsets.symmetric(
+                  //           horizontal: 30,
+                  //         ),
+                  //         child: TextField(
+                  //           controller: _messageController,
+                  //           decoration: const InputDecoration(
+                  //             border: InputBorder.none,
+                  //             hintText: 'Type Message here..',
+                  //             hintStyle: TextStyle(
+                  //               fontSize: 12,
+                  //             ),
+                  //           ),
+                  //           onSubmitted: (value) {
+                  //             sendMessage();
+                  //           },
+                  //           textInputAction: TextInputAction.done,
+                  //         ),
+// =======
+                  Padding(
+                    padding: const EdgeInsets.only(left: 30, right: 20),
+                    child: Container(
+                      decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(360),
                           color: Colors.grey[200],
+                          border: Border.all(
+                              color: const Color.fromRGBO(158, 126, 253, 0.3),
+                              style: BorderStyle.solid)),
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      height: MediaQuery.of(context).size.height * 0.064,
+                      // color: Colors.blue,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 15,
                         ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 30,
-                          ),
-                          child: TextField(
-                            controller: _messageController,
-                            decoration: const InputDecoration(
-                              border: InputBorder.none,
-                              hintText: 'Type Message here..',
-                              hintStyle: TextStyle(
-                                fontSize: 12,
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            const Padding(
+                              padding: EdgeInsets.only(top: 5),
+                              child: Icon(
+                                Icons.emoji_emotions,
+                                color: Color.fromRGBO(158, 126, 253, 1),
                               ),
                             ),
-                            onSubmitted: (value) {
-                              sendMessage();
-                            },
-                            textInputAction: TextInputAction.done,
-                          ),
+                            const SizedBox(
+                              width: 15,
+                            ),
+                            Container(
+                              child: Expanded(
+                                child: TextField(
+                                  controller: _messageController,
+                                  decoration: const InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: "Enter message here...",
+                                      hintStyle: TextStyle(fontSize: 13)),
+                                  onSubmitted: (value) {
+                                    sendMessage();
+                                  },
+                                  textInputAction: TextInputAction.done,
+                                ),
+                              ),
+                            ),
+                          ],
+// >>>>>>> chat_ui
                         ),
                       ),
                     ),
                   ),
-
-                  /* const SizedBox(
-                    width: 40,
-                  ),*/
+// <<<<<<< HEAD
+//
+//                   /* const SizedBox(
+//                     width: 40,
+//                   ),*/
+// =======
+// >>>>>>> chat_ui
                   GestureDetector(
                     onTap: () {
                       sendMessage();
                     },
                     child: Container(
-                      decoration: const BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Color.fromRGBO(158, 126, 253, 3)),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(360),
+                          color: CupertinoColors.systemPurple),
                       child: const Padding(
-                        padding: EdgeInsets.all(12.0),
+                        padding: EdgeInsets.all(10.0),
                         child: Icon(
                           Icons.send,
                           color: Colors.white,
+                          size: 25,
                         ),
                       ),
                     ),
                   ),
                 ],
               ),
-            ),
-          ),
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
